@@ -33,14 +33,13 @@ def pred(image_path, model, top_k):
     return probs, classes
 
 if __name__ == '__main__':
-    with open('label_map.json', 'r') as f:
-        class_names = json.load(f)
     parser.add_argument("filepath", type=str, help='Filepath (e.g. test_images/cautleya_spicata.jpg)')
     parser.add_argument("model", type=str, help='Model (e.g my_model.h5)')
     parser.add_argument("--top_K", type=int, help='Number of classes to show', default=1)
     parser.add_argument("--category_names", type=str, help='Path to a JSON file mapping labels to flower names', default='label_map.json')
     arg = parser.parse_args()
-    print(arg.filepath, arg.model, arg.top_K)
+    with open(arg.category_names, 'r') as f:
+        class_names = json.load(f)
 
     # load the model
     reloaded_keras_model = tf.keras.models.load_model(arg.model, custom_objects={'KerasLayer': hub.KerasLayer})
